@@ -20,22 +20,21 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-public class PersonService extends CrudServiceImpl<Person, PersonDTO, Long, PersonRepository>
+public class PersonServiceImpl extends CrudServiceImpl<Person, PersonDTO, Long, PersonRepository>
 implements IPersonService  {
-//	private final PersonRepository personRepository;
-//	private final ModelMapper modalMapper;
+	private final PersonRepository personRepository;
+	private final ModelMapper modalMapper;
 	
 
     @Autowired
     @Qualifier("taskExecutor")
     private ThreadPoolTaskExecutor  executor;
-    //private Executor executor;
 	
 	
-    public PersonService(PersonRepository repository, ModelMapper modelMapper) {
+    public PersonServiceImpl(PersonRepository repository, ModelMapper modelMapper) {
 		super(repository, modelMapper);
-//		this.personRepository = repository;
-//		this.modalMapper = modelMapper;
+		this.personRepository = repository;
+		this.modalMapper = modelMapper;
 	}
 
 	@Override
@@ -44,7 +43,7 @@ implements IPersonService  {
 		int i;
 		for (i = 0; i <10; i++) {
 			 final int index = i;
-			 executor.submit(() -> task_heavy(index));
+			 executor.execute(() -> task_heavy(index));
 			//task_heavy();
 		}
 		

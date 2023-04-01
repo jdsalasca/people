@@ -28,13 +28,7 @@ public class CacheConfig {
 	        return cacheManager;
 	    }
 	   
-	   @Scheduled(fixedRate = 60000) // runs every minute
-	    public void evictAllCaches() {
-		   log.info("Deleting cache");
-		   
-	        cacheManager().getCacheNames()
-	                .forEach(cacheName -> cacheManager().getCache(cacheName).clear());
-	    }
+
 
 
 }
