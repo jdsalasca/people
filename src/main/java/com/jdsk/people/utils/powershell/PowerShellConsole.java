@@ -27,10 +27,9 @@ public class PowerShellConsole  {
     public PowerShellConsole() {
         try {
             // Create PowerShell process
-            //ProcessBuilder builder = new ProcessBuilder("powershell.exe");
         	process = Runtime.getRuntime().exec("powershell.exe");
-//        	builder.redirectErrorStream(true);
-//            process = builder.start();
+            process.getOutputStream().write("Get-ChildItem\n".getBytes());
+            process.getOutputStream().flush();
 
             // Read output from PowerShell console
             reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
@@ -43,8 +42,6 @@ public class PowerShellConsole  {
 
 
             // Write commands to PowerShell console
-            process.getOutputStream().write("Get-ChildItem\n".getBytes());
-            process.getOutputStream().flush();
 
 
             
@@ -55,8 +52,6 @@ public class PowerShellConsole  {
 
     public  String executeCommand(String command)  {
         try {
-            // Write command to PowerShell console
-            // Write command to PowerShell console
             process.getOutputStream().write((command + "\n").getBytes());
             process.getOutputStream().flush();
 
@@ -64,16 +59,18 @@ public class PowerShellConsole  {
             // Read output from PowerShell console
             StringBuilder outputBuilder = new StringBuilder();
             String line;
-            while ((line = reader.readLine()) != null) {
+            int outputLength  =0;
+            while (reader.ready() && (line = reader.readLine()) != null) {
+                outputLength += line.length() + System.lineSeparator().length();
+                if (outputLength >= 2000) {
+                    // If the output length exceeds 2000 characters, break out of the loop
+                    break;
+                }
                 outputBuilder.append(line).append(System.lineSeparator());
             }
             String output = outputBuilder.toString();
-
-            // Log the output
             log.info(output);
-
             return output;
-            
 
         } catch (IOException 	 e) {
             log.warn("Error executing command: {}", e.getMessage());

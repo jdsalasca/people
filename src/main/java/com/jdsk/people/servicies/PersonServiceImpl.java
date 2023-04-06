@@ -37,31 +37,5 @@ implements IPersonService  {
 		this.modalMapper = modelMapper;
 	}
 
-	@Override
-	@Cacheable("heavyTask")
-	public void onExecuteMultipleTasks() {
-		int i;
-		for (i = 0; i <10; i++) {
-			 final int index = i;
-			 executor.execute(() -> task_heavy(index));
-			//task_heavy();
-		}
-		
-	}
-	
-	public void task_heavy (int i) {
-		try {
-			log.info("executing {}", i);
-			Thread.sleep(5000);
-			log.info("DONE!!");
-			
-			
-			
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	}
    
 }
