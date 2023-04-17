@@ -1,4 +1,4 @@
-package com.jdsk.people.configs;
+package com.jdsk.people.config;
 
 import java.util.Arrays;
 

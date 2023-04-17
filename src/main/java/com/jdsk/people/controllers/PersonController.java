@@ -14,7 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;import com.jdsk.people.PeopleApplication;
 import com.jdsk.people.dtos.PersonDTO;
 import com.jdsk.people.entities.Person;
+import com.jdsk.people.interfaces.ICrudInterface;
 import com.jdsk.people.interfaces.IPersonService;
+import com.jdsk.people.repositories.PersonRepository;
+import com.jdsk.people.servicies.CrudServiceImpl;
 import com.jdsk.people.utils.response.DefaultResponse;
 
 import lombok.RequiredArgsConstructor;
@@ -22,7 +25,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/people")
 @RequiredArgsConstructor
 public class PersonController {
-	
+		private final ICrudInterface  <Person, PersonDTO, Long, PersonRepository> abstractCrudService;
 	   private final IPersonService ipersonService;
 
 

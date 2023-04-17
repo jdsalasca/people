@@ -3,6 +3,7 @@ package com.jdsk.people.Integrations.discord.config;
 import java.util.Objects;
 
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;
@@ -13,28 +14,30 @@ import discord4j.core.GatewayDiscordClient;
 import discord4j.core.event.domain.message.MessageCreateEvent;
 import discord4j.core.object.entity.User;
 import jakarta.annotation.PreDestroy;
+import jakarta.annotation.Priority;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import reactor.core.Disposable;
 
 
-@Configuration
+//@Configuration
 @RequiredArgsConstructor
 @Slf4j
-public  class DiscordBotConfig  implements DisposableBean {
-
-	private DiscordClient discordClient;
+public class DiscordBotConfig  implements DisposableBean {
+	
+	private  DiscordClient discordClient;
 	
 	/**
 	 * Interesting Im using DisposableBea to avoid the creation of multiple objets of the same kind
 	 */
-	 private Disposable server;
-    @Value("${discord.bot.token}")
-    private String botToken;
-   @Bean
+	
+	private static final String DISCORDBOTCODE = System.getenv("DISCORD_BOT_CODE");
+	
+	private Disposable server;
+	//@Bean Non ready yet
    DiscordClient discordClient() {
     	DiscordClient discordClientIns = DiscordClient
-    			.create(botToken);
+    			.create(DISCORDBOTCODE);
     	this.discordClient = discordClientIns;
     	return discordClientIns;
     }
@@ -52,7 +55,6 @@ public  class DiscordBotConfig  implements DisposableBean {
         return discordClient.login().block();
     }
 
-    //@Lazy
     @Bean
     ApplicationRunner applicationRunner(GatewayDiscordClient gatewayDiscordClient, MessageListener messageListener) {
         log.info("Requiring connection");
@@ -61,6 +63,7 @@ public  class DiscordBotConfig  implements DisposableBean {
             server = gatewayDiscordClient.on(MessageCreateEvent.class)
                     .flatMap(messageListener::onMessageCreateEvent)
                     .subscribe();
+            
         };
 
         

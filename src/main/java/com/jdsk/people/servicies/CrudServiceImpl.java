@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
@@ -35,14 +36,14 @@ It implements the {@link com.jdsk.people.interfaces.ICrudInterface} interface.
 
 @param <R> the repository that will be used to access the entity data
 */
-@RequiredArgsConstructor
 @Slf4j
 public abstract class CrudServiceImpl<T, K, ID extends Serializable, R extends JpaRepository<T, ID>>
 implements ICrudInterface<T, K, ID, R> {
 
-
-    private final R repository;
-    private final ModelMapper modelMapper;
+	@Autowired
+	private R repository;
+	@Autowired
+	private ModelMapper modelMapper;
     
 	@Override
 	public ResponseEntity<DefaultResponse<T>> update(  ID id, K dto, BindingResult bindigResult,  Class<T> entityClass) {

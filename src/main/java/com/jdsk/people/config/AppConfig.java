@@ -1,4 +1,4 @@
-package com.jdsk.people.configs;
+package com.jdsk.people.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

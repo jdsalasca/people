@@ -36,7 +36,7 @@ public class DefaultResponse<T> {
    	 this.messageType = messageType;
     }
 
-    public  static enum MESSAGETYPES {
+    public enum MESSAGETYPES {
    	 INFO("info"), SUCCESS("success"), WARN("warn"), ERROR("error");
 
    	 private String value;
@@ -49,7 +49,7 @@ public class DefaultResponse<T> {
 
     }
 
-    public  static enum DATATYPE {
+    public  enum DATATYPE {
    	 LIST("List"), OBJECT("Object");
 
    	 private String value;
@@ -63,8 +63,9 @@ public class DefaultResponse<T> {
    	 }
     }
 
-    public static  enum DEFAULTMESSAGES {
+    public  enum DEFAULTMESSAGES {
    	 SUCCESS_MESSAGE("Operación terminada correctamente"),
+   	 INTERNAL_SERVER_ERROR("Error interno del sistema"),
    	 NOT_INFO_FOUND_MESSAGE("No se encontro información relacionada"),
    	 DATA_SAVED_MESSAGE("Información Guardada con éxito!"), NOT_DATA_SAVED_MESSAGE("Información no almacenada"),
    	 INFO_UPDATED_MESSAGE("Información actualizada con éxito!");
@@ -85,7 +86,7 @@ public class DefaultResponse<T> {
    	 DefaultResponse<T> messageResult = new DefaultResponse<>();
    	 messageResult.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
    	 messageResult.setMessageType(MESSAGETYPES.ERROR);
-   	 messageResult.setMessage("Error interno del sistema");
+   	 messageResult.setMessage(DEFAULTMESSAGES.INTERNAL_SERVER_ERROR.value());
    	 messageResult.setErrorStringList(errorMessage);
    	 return new ResponseEntity<>(messageResult, messageResult.catchHttpStatus());
 
@@ -96,7 +97,7 @@ public class DefaultResponse<T> {
    	 DefaultResponse <T>messageResult = new DefaultResponse<>();
    	 messageResult.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
    	 messageResult.setMessageType(MESSAGETYPES.ERROR);
-   	 messageResult.setMessage("Error interno del sistema");
+   	 messageResult.setMessage(DEFAULTMESSAGES.INTERNAL_SERVER_ERROR.value());
    	 messageResult.setError(errorMessage);
    	 return new ResponseEntity<>(messageResult, messageResult.catchHttpStatus());
 
@@ -106,7 +107,7 @@ public class DefaultResponse<T> {
    	 DefaultResponse<T> messageResult = new DefaultResponse<>();
    	 messageResult.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
    	 messageResult.setMessageType(MESSAGETYPES.ERROR);
-   	 messageResult.setMessage("Error interno del sistema");
+   	 messageResult.setMessage(DEFAULTMESSAGES.INTERNAL_SERVER_ERROR.value());
    	 messageResult.setError(errorMessage);
    	 return new ResponseEntity<>(messageResult, messageResult.catchHttpStatus());
     }
@@ -236,8 +237,8 @@ public class DefaultResponse<T> {
     }
     public void setErrorStringList(List<String> errorsList) {
    	 ArrayList<Error> errors = new ArrayList<>();
-   	 for (String error : errorsList) {
-   		 errors.add(new Error(error, this.messageType));
+   	 for (String errorL : errorsList) {
+   		 errors.add(new Error(errorL, this.messageType));
    	 }
    	 this.error = errors;
     }
