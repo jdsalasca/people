@@ -18,6 +18,8 @@ public class DataSourceConfig {
 	private static final String USERNAME = System.getenv("DATASOURCE_USERNAME");
 	private static final String PASSWORD = System.getenv("DATASOURCE_PASSWORD");
 
+	
+	//TODO use HIKARI insted to provide a more efficient connection
 	@Bean
 	DataSource dataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();
