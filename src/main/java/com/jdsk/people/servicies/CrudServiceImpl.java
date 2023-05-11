@@ -45,34 +45,6 @@ implements ICrudInterface<T, K, ID, R> {
 	@Autowired
 	private ModelMapper modelMapper;
     
-	@Override
-	public ResponseEntity<DefaultResponse<T>> update(  ID id, K dto, BindingResult bindigResult,  Class<T> entityClass) {
-        if (bindigResult.hasErrors()) {
-            return DefaultResponse.onThrow400ResponseBindingResult(bindigResult);
-        }
-        try {
-        	T entity = repository.findById(id).orElseThrow( () -> new EntityNotFoundException(DEFAULTMESSAGES.NOT_INFO_FOUND_MESSAGE.value()));
-        	modelMapper.map(dto, entity);
-        	
-        	
-            
-            return DefaultResponse.onThrow200Response( List.of(repository.save(entity)));
-		} catch (DataIntegrityViolationException e) {
-			log.info("error creating entity for {} because of {}", entityClass ,e.getLocalizedMessage());
-			return DefaultResponse.onThrow400ResponseTypeInfo(e.getMostSpecificCause().getLocalizedMessage());
-		}catch (ConstraintViolationException constraintViolationException) {
-            return DefaultResponse.onThrow400ResponseTypeError(List.of(constraintViolationException.getMessage()).toString());
-	        
-		}catch (EntityNotFoundException e) {
-			return DefaultResponse.onThrow400ResponseTypeInfo(e.getLocalizedMessage());
-	        
-		}catch (Exception e) {
-			log.info("IMPORTANT unhandle exception {}", e.getLocalizedMessage());
-			log.info("error creating entity for {} because of " + e.getLocalizedMessage(), entityClass);
-			return DefaultResponse.onThrow400ResponseTypeInfo(e.getLocalizedMessage());
-		}
-	}
-    
     /**
 
     Returns all entities of the given type.
@@ -89,10 +61,7 @@ implements ICrudInterface<T, K, ID, R> {
     	}else {
     		return DefaultResponse.onThrow200Response(entities);
     	}
-        
     }
-    
-
 
 /**
 
@@ -114,6 +83,32 @@ if no entity with the given id exists in the database.
     	}	
     }
     
+	@Override
+	public ResponseEntity<DefaultResponse<T>> update(  ID id, K dto, BindingResult bindigResult,  Class<T> entityClass) {
+        if (bindigResult.hasErrors()) {
+            return DefaultResponse.onThrow400ResponseBindingResult(bindigResult);
+        }
+        try {
+        	T entity = repository.findById(id).orElseThrow( () -> new EntityNotFoundException(DEFAULTMESSAGES.NOT_INFO_FOUND_MESSAGE.value()));
+        	modelMapper.map(dto, entity);
+            
+            return DefaultResponse.onThrow200Response( List.of(repository.save(entity)));
+		} catch (DataIntegrityViolationException e) {
+			log.info("error creating entity for {} because of {}", entityClass ,e.getLocalizedMessage());
+			return DefaultResponse.onThrow400ResponseTypeInfo(e.getMostSpecificCause().getLocalizedMessage());
+		}catch (ConstraintViolationException constraintViolationException) {
+            return DefaultResponse.onThrow400ResponseTypeError(List.of(constraintViolationException.getMessage()).toString());
+	        
+		}catch (EntityNotFoundException e) {
+			return DefaultResponse.onThrow400ResponseTypeInfo(e.getLocalizedMessage());
+	        
+		}catch (Exception e) {
+			log.info("IMPORTANT unhandle exception {}", e.getLocalizedMessage());
+			log.info("error creating entity for {} because of " + e.getLocalizedMessage(), entityClass);
+			return DefaultResponse.onThrow400ResponseTypeInfo(e.getLocalizedMessage());
+		}
+	}
+
     /**
 
     Saves a new entity to the database.

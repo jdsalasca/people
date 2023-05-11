@@ -23,7 +23,6 @@ public class CacheConfig {
 	        cacheManager.setCaches(Arrays.asList(
 	                new ConcurrentMapCache("personCache"),
 	                new ConcurrentMapCache("heavyTask")
-	                
 	        ));
 	        return cacheManager;
 	    }

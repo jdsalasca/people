@@ -2,6 +2,7 @@ package com.jdsk.people.interfaces;
 
 import java.io.Serializable;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -22,13 +23,14 @@ This interface defines a CRUD (Create, Read, Update, Delete) contract for generi
 @author jdsalasca
 */
 public interface ICrudInterface<T, K , ID extends Serializable, L extends JpaRepository<T, ID>>  {
-	
+
+
 	/**
 
     Retrieves all the entities of type T.
     @return a ResponseEntity with a DefaultResponse containing the list of entities, or an error message if an exception occurs
     */
-    ResponseEntity<DefaultResponse<T>> getAll();
+   ResponseEntity<DefaultResponse<T>> getAll();
     /**
 
     Retrieves the entity of type T identified by the given ID.
@@ -61,4 +63,6 @@ public interface ICrudInterface<T, K , ID extends Serializable, L extends JpaRep
     @param id the identifier of the entity being deleted
     */
     void deleteById(ID id);
+   
+    
 }

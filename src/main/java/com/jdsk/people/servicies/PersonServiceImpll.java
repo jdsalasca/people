@@ -30,37 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
-public  class PersonServiceImpl  extends CrudServiceImpl<Person, PersonDTO, Long, PersonRepository>
-implements IPersonService  {
-	private final PersonRepository personRepository;
-	private final ModelMapper modalMapper;
-	private final KafkaTemplate<String, PaymentPlacedEvent> kafkaTemplate;
-	
-	private  final IDailyRoutineService iDailyRoutineService;
-
-	public String test() {
-		log.info("Working");
-		return "wortking";
-	}
-
-	@Override
-	public ResponseEntity<DefaultResponse<Person>> getAll() {
-		log.info("taking override implementation");
-		return DefaultResponse.onThrow200Response(Collections.singletonList(new Person()));
-	}
-
-	@Override
-	public String test2() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
-	
-	
-		
-    
-    
+public abstract class PersonServiceImpll implements IPersonService  {
 
 
 

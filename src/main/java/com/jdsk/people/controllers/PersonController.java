@@ -37,7 +37,8 @@ public class PersonController {
 	    }
 
 	    @GetMapping("/{id}")
-	    public ResponseEntity<DefaultResponse<Person>> getById(@PathVariable Long id) {
+	    public ResponseEntity<DefaultResponse<Person>> getById(@PathVariable Long id) throws InterruptedException {
+	    	Thread.sleep(1000);
 	        return ipersonService.getById(id);
 	    }
 
